@@ -5,11 +5,11 @@ interface Comic {
   id: number;
   favorite: boolean;
   title: string;
+  description: string;
   thumbnail: {
     extension: string;
     path: string;
   };
-  description: string;
 }
 
 interface CounterState {

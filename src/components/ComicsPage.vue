@@ -31,6 +31,23 @@ import axios from 'axios'
 import md5 from 'md5'
 import IconLove from '@/components/icons/IconLove.vue';
 
+interface Comic {
+  id: number
+  favorite: boolean
+  title: string
+  description: string
+  thumbnail: {
+    path: string
+    extension: string
+  };
+  creators: {
+    items: {
+      name: string
+    }[];
+  };
+}
+
+
 export default defineComponent({
   components: {
     IconLove,
@@ -74,10 +91,10 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
           console.error('Error fetching comics data:', error)
         })
     },
-    addToFavorites(comic) {
+    addToFavorites(comic: Comic) {
       useCounterStore().addFavorite(comic)
     },
-    getCreators(comic) {
+    getCreators(comic: Comic) {
       if (comic.creators && comic.creators.items.length > 0) {
         return comic.creators.items.map(creator => creator.name).join(', ')
       }
