@@ -31,22 +31,6 @@ import axios from 'axios'
 import md5 from 'md5'
 import IconLove from '@/components/icons/IconLove.vue';
 
-interface Comic {
-  id: number
-  favorite: boolean
-  title: string
-  description: string
-  thumbnail: {
-    path: string
-    extension: string
-  };
-  creators: {
-    items: {
-      name: string
-    }[];
-  };
-}
-
 
 export default defineComponent({
   components: {
@@ -81,7 +65,7 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
           },
         })
         .then(response => {
-          const comicsData = response.data.data.results.map(comic => ({
+          const comicsData = response.data.data.results.map((comic: any) => ({
         ...comic,
         favorite: false, // Add the favorite property to each comic
       }))
@@ -91,12 +75,12 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
           console.error('Error fetching comics data:', error)
         })
     },
-    addToFavorites(comic: Comic) {
+    addToFavorites(comic: any) {
       useCounterStore().addFavorite(comic)
     },
-    getCreators(comic: Comic) {
+    getCreators(comic: any) {
       if (comic.creators && comic.creators.items.length > 0) {
-        return comic.creators.items.map(creator => creator.name).join(', ')
+        return comic.creators.items.map((creator: { name: any; }) => creator.name).join(', ')
       }
       return 'N/A'
     },
