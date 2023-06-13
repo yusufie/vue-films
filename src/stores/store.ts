@@ -4,7 +4,12 @@ import { defineStore } from 'pinia'
 interface Comic {
   id: number;
   favorite: boolean;
-  // Other properties
+  title: string;
+  thumbnail: {
+    extension: string;
+    path: string;
+  };
+  description: string;
 }
 
 interface CounterState {
