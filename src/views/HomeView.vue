@@ -1,19 +1,30 @@
 <template>
-  <div>
-    <ComicsPage />
+
+  <div class="container">
+
+    <Header />
+
+    <div class="movieShowcase">
+      <ComicsGenre />
+    </div>
+
   </div>
+  
 </template>
 
 <script lang="ts">
-import ComicsPage from '@/components/ComicsPage.vue';
+
+import ComicsGenre from '@/components/ComicsGenre.vue';
+import Header from '@/components/Header.vue';
 
 export default {
   components: {
-    ComicsPage,
+    ComicsGenre,
+    Header,
   },
 };
 </script>
 
 <style>
-/* Add your custom styles for the home page */
+
 </style>

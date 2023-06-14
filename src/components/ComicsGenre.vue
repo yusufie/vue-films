@@ -1,6 +1,6 @@
 <template>
   <div class="comics-page">
-    <h1>Comics</h1>
+    <h1 class="movieShowcase__heading">Netflix Originals</h1>
     <div class="comics-list">
       <div v-for="comic in comics" :key="comic.id" class="comic-item">
         <div class="comic-thumbnail">
@@ -93,9 +93,12 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
   text-align: center;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+.movieShowcase__heading {
+    font-weight: 600;
+    text-align: start;
+    margin-top: 1rem;
+    padding-left: 2rem;
+    color: white;
 }
 
 .comics-list {
@@ -105,7 +108,7 @@ h1 {
 }
 
 .comic-item {
-  width: 300px;
+  width: 200px;
   margin: 20px;
   padding: 10px;
   background-color: #010040;
