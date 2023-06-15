@@ -1,12 +1,28 @@
 <template>
   <div class="comics-page">
     <h1 class="movieShowcase__heading">Netflix Originals</h1>
-    <div class="comics-list">
-      <div v-for="comic in comics" :key="comic.id" class="comic-item">
+
+    <!-- swiper starts -->
+      <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div
+        v-for="comic in comics"
+        :key="comic.id"
+          class="swiper-slide"
+          :class="{ 'swiper-slide-active': isActive(comic.id), 'swiper-slide-hovered': isHovered(comic.id) }"
+          @mouseenter="setHovered(comic.id)"
+          @mouseleave="setHovered(null)"
+          @click="selectComic(comic)"
+        >
+
         <div class="comic-thumbnail">
           <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
+
+          <button @click="addToFavorites(comic)" class="favorite-button">
+            <IconLove />
+          </button>
         </div>
-        <div class="comic-details">
+<!--         <div class="comic-details">
           <h2 class="comic-title">{{ comic.title }}</h2>
           <p class="comic-description">{{ comic.description }}</p>
           <p class="comic-creators">
@@ -15,9 +31,22 @@
           <button @click="addToFavorites(comic)" class="favorite-button">
             <IconLove />
           </button>
-        </div>
-      </div>
+        </div> -->
+
+
     </div>
+      </div>
+
+      <!-- Add Swiper pagination -->
+      <div class="swiper-pagination"></div>
+
+      <!-- Add Swiper navigation -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+    </div>
+    <!-- swiper ends -->
+
     <div class="favorites-badge">
       <span class="badge">{{ favoriteCount }}</span>
     </div>
@@ -25,12 +54,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useCounterStore } from '@/stores/store'
-import axios from 'axios'
-import md5 from 'md5'
+import { defineComponent, ref } from 'vue';
+import axios from 'axios';
+import md5 from 'md5';
 import IconLove from '@/components/icons/IconLove.vue';
+import { useCounterStore } from '@/stores/store';
 
+import Swiper, { Pagination, Navigation } from 'swiper';
+import 'swiper/swiper-bundle.css';
+
+Swiper.use([Pagination, Navigation]);
+
+/* import 'swiper/components/pagination/pagination.scss';
+import 'swiper/components/navigation/navigation.scss'; */
 
 export default defineComponent({
   components: {
@@ -44,13 +80,36 @@ export default defineComponent({
       return useCounterStore().favoriteCount
     },
   },
+  data() {
+    return {
+      hoveredItemId: null,
+    };
+  },
+
   mounted() {
-    this.fetchComicsData()
+    this.fetchComicsData();
+
+    // Initialize Swiper
+    new Swiper('.swiper-container', {
+      slidesPerView: 5,
+      spaceBetween: 1,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        dynamicBullets: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      loop: true, // Enable infinite loop
+    });
+
   },
   methods: {
     fetchComicsData() {
       const publicKey = import.meta.env.VITE_APP_PUBLIC_KEY;
-const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
+      const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
 
       const ts = new Date().getTime().toString()
       const hash = md5(ts + privateKey + publicKey)
@@ -84,13 +143,95 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
       }
       return 'N/A'
     },
+    isActive(itemId) {
+      return this.hoveredItemId === itemId;
+    },
+    isHovered(itemId) {
+      return this.hoveredItemId !== null && this.hoveredItemId !== itemId;
+    },
+    setHovered(itemId) {
+      this.hoveredItemId = itemId;
+    },
   },
 })
 </script>
 
 <style scoped>
-.comics-page {
+/*
+@import '~swiper/swiper.scss';
+@import '~swiper/components/pagination/pagination.scss';
+@import '~swiper/components/navigation/navigation.scss';
+*/
+
+.swiper-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%; /* Added */
+  overflow: hidden; /* Added */
+}
+
+.swiper-wrapper {
+  display: flex;
+  padding: 1rem;
+}
+
+.swiper-slide {
+  flex-shrink: 0;
+  width: 20%;
+  margin: 1rem;
+  box-sizing: border-box;
+  transition: transform 0.4s ease-in-out;
+}
+
+.swiper-slide:hover {
+  transform: scale(1.2);
+  z-index: 2;
+}
+
+.swiper-slide-hovered {
+  opacity: 0.6;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+    /* width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; */
+  }
+/*
+  .swiper-button-prev {
+    left: 10px;
+  }
+
+  .swiper-button-next {
+    right: 10px;
+  } */
+
+
+  
+  .comic-thumbnail {
+  position: relative;
+  padding: 0.2rem;
+}
+
+.comic-thumbnail img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+
+  .comics-page {
   text-align: center;
+  width: 100%; 
+  overflow: hidden; 
 }
 
 .movieShowcase__heading {
@@ -101,31 +242,8 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
     color: white;
 }
 
-.comics-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
 
-.comic-item {
-  width: 200px;
-  margin: 20px;
-  padding: 10px;
-  background-color: #010040;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease-in-out;
-}
 
-.comic-item:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.comic-thumbnail img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
 
 .comic-title {
   font-size: 18px;
@@ -159,6 +277,9 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
 }
 
 .favorite-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -167,8 +288,8 @@ const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
 
 .favorites-badge {
   position: fixed;
-  top: 10px;
-  right: 10px;
+  top: 100px;
+  right: 100px;
   padding: 5px 10px;
   background-color: red;
   border-radius: 50%;

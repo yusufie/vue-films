@@ -46,16 +46,23 @@ export default {
 
 <style scoped>
 .navigation {
-  background-color: transparent;
-  z-index: 100;
+  z-index: 2;
   grid-column: 1 / 13;
   position: fixed;
   width: 100%;
-  height: 6.7rem;
+  height: 6rem;
   transition: all 1s;
   transition-timing-function: ease-in;
   top: 0;
-  padding-bottom: 1.5rem;
+
+  /* glassmorphism start */
+  background: rgba( 24, 24, 24, 0.4 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 4px );
+  -webkit-backdrop-filter: blur( 4px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  /* glassmorphism end */
 }
 
 .navigationContainer {
