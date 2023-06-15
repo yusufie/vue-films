@@ -12,8 +12,8 @@
           :class="{ 'swiper-slide-active': isActive(comic.id), 'swiper-slide-hovered': isHovered(comic.id) }"
           @mouseenter="setHovered(comic.id)"
           @mouseleave="setHovered(null)"
-          @click="selectComic(comic)"
-        >
+          >
+          <!-- @click="selectComic(comic)" -->
 
         <div class="comic-thumbnail">
           <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
@@ -143,13 +143,13 @@ export default defineComponent({
       }
       return 'N/A'
     },
-    isActive(itemId) {
+    isActive(itemId: any) {
       return this.hoveredItemId === itemId;
     },
-    isHovered(itemId) {
+    isHovered(itemId: any) {
       return this.hoveredItemId !== null && this.hoveredItemId !== itemId;
     },
-    setHovered(itemId) {
+    setHovered(itemId: any) {
       this.hoveredItemId = itemId;
     },
   },
