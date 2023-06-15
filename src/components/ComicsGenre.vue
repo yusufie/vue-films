@@ -64,8 +64,14 @@ import Swiper from 'swiper';
 
 import { Navigation, Pagination } from 'swiper/core';
 import 'swiper/swiper-bundle.css';
+ 
+import type { SwiperOptions } from 'swiper/types';
 
 Swiper.use([Pagination, Navigation]);
+
+interface CustomSwiperOptions extends SwiperOptions {
+  slidesPerView?: number;
+}
 
 export default defineComponent({
   components: {
@@ -102,7 +108,7 @@ export default defineComponent({
         prevEl: '.swiper-button-prev',
       },
       loop: true, // Enable infinite loop
-    });
+    } as CustomSwiperOptions );
 
   },
   methods: {
