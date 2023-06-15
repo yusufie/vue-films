@@ -54,19 +54,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import axios from 'axios';
 import md5 from 'md5';
 import IconLove from '@/components/icons/IconLove.vue';
 import { useCounterStore } from '@/stores/store';
 
-import Swiper, { Pagination, Navigation } from 'swiper';
+import { Swiper, Navigation, Pagination } from 'swiper/core';
 import 'swiper/swiper-bundle.css';
 
 Swiper.use([Pagination, Navigation]);
-
-/* import 'swiper/components/pagination/pagination.scss';
-import 'swiper/components/navigation/navigation.scss'; */
 
 export default defineComponent({
   components: {
@@ -190,7 +187,8 @@ export default defineComponent({
 }
 
 .swiper-slide-hovered {
-  opacity: 0.6;
+  opacity: 0.5;
+  transition: all 0.5s ease-in-out;
 }
 
 .swiper-button-prev,
