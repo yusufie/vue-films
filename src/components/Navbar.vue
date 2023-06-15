@@ -9,6 +9,10 @@
         <RouterLink to="/movies" class="navigationContainerLink">Movies</RouterLink>
         <RouterLink to="/recentlyadded" class="navigationContainerLink">Recently Added</RouterLink>
         <RouterLink to="/myfavorites" class="navigationContainerLink">My Favorites</RouterLink>
+        <IconLove class="LoveIconLogo"/>
+        <div class="favorites-badge">
+          <span class="badge">{{ favoriteCount }}</span>
+        </div>
         <div class="navigationContainerLeft">
         <SearchIcon class="SearchIconLogo" />
         <input
@@ -30,16 +34,27 @@
 import { RouterLink } from 'vue-router';
 import SearchIcon from '@/components/icons/IconSearch.vue';
 import BellLogo from '@/components/icons/IconBell.vue';
+import IconLove from '@/components/icons/IconLove.vue';
 import DropdownContent from '@/components/DropdownContent.vue';
+
+import { useCounterStore } from '@/stores/store';
+
 
 export default {
   name: 'Navbar',
   components: {
     SearchIcon,
     BellLogo,
+    IconLove,
     DropdownContent,
     RouterLink,
   },
+  computed: {
+  favoriteCount() {
+    return useCounterStore().favoriteCount;
+  },
+},
+
 }
 
 </script>
@@ -103,6 +118,16 @@ export default {
   padding-right: 2rem;
   display: flex;
   justify-content: flex-end;
+}
+
+.LoveIconLogo {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-right: 0.4rem;
+}
+
+.badge {
+  color: white;
 }
 
 .SearchIconLogo {

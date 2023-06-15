@@ -1,6 +1,6 @@
 <template>
   <div class="comics-page">
-    <h1 class="movieShowcase__heading">Netflix Originals</h1>
+    <h1 class="movieShowcase__heading">Comics</h1>
 
     <!-- swiper starts -->
       <div class="swiper-container">
@@ -16,22 +16,29 @@
           <!-- @click="selectComic(comic)" -->
 
         <div class="comic-thumbnail">
+
           <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
 
-          <button @click="addToFavorites(comic)" class="favorite-button">
-            <IconLove />
-          </button>
+          <button
+              @click="addToFavorites(comic)"
+              class="favorite-button"
+              :class="{ 'is-favorite': comic.favorite }"
+            >
+              <IconLovePink v-if="!comic.favorite" />
+              <IconLove v-if="comic.favorite" />
+            </button>
+
+
+                  
+          <div class="comic-details">
+              <h2 class="comic-title">{{ comic.title }}</h2>
+              <p class="comic-description">{{ comic.description }}</p>
+              <p class="comic-creators">
+                <strong>Creators:</strong> {{ getCreators(comic) }}
+              </p>
+          </div> 
+
         </div>
-<!--         <div class="comic-details">
-          <h2 class="comic-title">{{ comic.title }}</h2>
-          <p class="comic-description">{{ comic.description }}</p>
-          <p class="comic-creators">
-            <strong>Creators:</strong> {{ getCreators(comic) }}
-          </p>
-          <button @click="addToFavorites(comic)" class="favorite-button">
-            <IconLove />
-          </button>
-        </div> -->
 
 
     </div>
@@ -46,10 +53,11 @@
 
     </div>
     <!-- swiper ends -->
-
+    <!-- 
     <div class="favorites-badge">
       <span class="badge">{{ favoriteCount }}</span>
     </div>
+     -->
   </div>
 </template>
 
@@ -58,6 +66,7 @@ import { defineComponent } from 'vue';
 import axios from 'axios';
 import md5 from 'md5';
 import IconLove from '@/components/icons/IconLove.vue';
+import IconLovePink from '@/components/icons/IconLovePink.vue';
 import { useCounterStore } from '@/stores/store';
 
 import Swiper from 'swiper';
@@ -76,6 +85,7 @@ interface CustomSwiperOptions extends SwiperOptions {
 export default defineComponent({
   components: {
     IconLove,
+    IconLovePink,
   },
   computed: {
     comics() {
@@ -96,8 +106,7 @@ export default defineComponent({
 
     // Initialize Swiper
     new Swiper('.swiper-container', {
-      slidesPerView: 5,
-      spaceBetween: 1,
+      // Optional parameters
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
@@ -108,6 +117,43 @@ export default defineComponent({
         prevEl: '.swiper-button-prev',
       },
       loop: true, // Enable infinite loop
+      breakpoints: {
+        // when window width is >= 320px
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 1,
+        },
+        // when window width is >= 480px
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 1,
+        },
+        // when window width is >= 640px
+        640: {
+          slidesPerView: 3,
+          spaceBetween: 1,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 1,
+        },
+        1024: {
+          slidesPerView: 5,
+          spaceBetween: 1,
+        },
+        1280: {
+          slidesPerView: 6,
+          spaceBetween: 1,
+        },
+        1536: {
+          slidesPerView: 7,
+          spaceBetween: 1,
+        },
+        1920: {
+          slidesPerView: 8,
+          spaceBetween: 1,
+        },
+      },
     } as CustomSwiperOptions );
 
   },
@@ -162,11 +208,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/*
-@import '~swiper/swiper.scss';
-@import '~swiper/components/pagination/pagination.scss';
-@import '~swiper/components/navigation/navigation.scss';
-*/
 
 .swiper-container {
   position: relative;
@@ -204,23 +245,19 @@ export default defineComponent({
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-    /* width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10; */
-  }
-/*
-  .swiper-button-prev {
-    left: 10px;
+    z-index: 10;
+    color: white;
   }
 
-  .swiper-button-next {
-    right: 10px;
-  } */
+  .swiper-button-prev:hover {
+    scale: 1.2;
+    transition: all 0.5s ease-in-out;
+  }
 
-
+  .swiper-button-next:hover {
+    scale: 1.2;
+    transition: all 0.5s ease-in-out;
+  }
   
   .comic-thumbnail {
   position: relative;
@@ -233,11 +270,77 @@ export default defineComponent({
   border-radius: 5px;
 }
 
+.comic-details {
+  opacity: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: auto;
+  width: auto;
+  bottom: 0;
+  margin-right: 0.2rem;
+  padding: 1rem;
+  color: white;
+  transition: opacity 0.4s ease-in-out;
+
+  /* glassmorphism start */
+  background: rgba( 24, 24, 24, 0.4 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 4px );
+  -webkit-backdrop-filter: blur( 4px );
+  border-radius: 10px;
+  /* glassmorphism end */
+}
+
+.comic-details h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.comic-details p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.comic-details strong {
+  font-weight: bold;
+}
+
+.comic-details .comic-creators {
+  margin-bottom: 15px;
+}
+
+.comic-details .favorite-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 1; /* Ensure the button appears above the details */
+}
+
+.comic-details:hover {
+  opacity: 1;
+}
+
+.comic-details .favorite-button svg {
+  width: 16px;
+  height: 16px;
+  fill: white;
+}
+
+.swiper-slide:hover .comic-details {
+  /* display: block;  */
+  opacity: 1;
+}
 
   .comics-page {
   text-align: center;
   width: 100%; 
-  overflow: hidden; 
+  overflow: hidden;
+  margin-bottom: 3rem;
 }
 
 .movieShowcase__heading {
@@ -284,11 +387,16 @@ export default defineComponent({
 
 .favorite-button {
   position: absolute;
-  top: 5px;
+  top: 10px;
   right: 5px;
   border: none;
   background-color: transparent;
   cursor: pointer;
+}
+
+.favorite-button:hover {
+  transform: scale(1.2);
+  transition: all 0.5s ease-in-out;
 }
 
 

@@ -19,8 +19,8 @@ import Header from '@/components/Header.vue';
 
 export default {
   components: {
-    ComicsGenre,
     Header,
+    ComicsGenre,
   },
 };
 </script>
