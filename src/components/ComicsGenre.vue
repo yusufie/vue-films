@@ -60,7 +60,9 @@ import md5 from 'md5';
 import IconLove from '@/components/icons/IconLove.vue';
 import { useCounterStore } from '@/stores/store';
 
-import { Swiper, Navigation, Pagination } from 'swiper/core';
+import Swiper from 'swiper';
+
+import { Navigation, Pagination } from 'swiper/core';
 import 'swiper/swiper-bundle.css';
 
 Swiper.use([Pagination, Navigation]);
