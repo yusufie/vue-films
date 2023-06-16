@@ -1,6 +1,6 @@
 <template>
 
-<header class="banner">
+    <header class="banner">
       <div class="banner__contents">
         <h1 class="banner__title">Money Heist</h1>
         <div class="banner__buttons">

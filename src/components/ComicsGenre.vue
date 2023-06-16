@@ -12,15 +12,15 @@
           :class="{ 'swiper-slide-active': isActive(comic.id), 'swiper-slide-hovered': isHovered(comic.id) }"
           @mouseenter="setHovered(comic.id)"
           @mouseleave="setHovered(null)"
+          @click="goToComicDetails(comic)"
           >
-          <!-- @click="selectComic(comic)" -->
 
         <div class="comic-thumbnail">
 
           <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
 
           <button
-              @click="addToFavorites(comic)"
+          @click="handleFavoriteClick($event, comic)"
               class="favorite-button"
               :class="{ 'is-favorite': comic.favorite }"
             >
@@ -185,6 +185,10 @@ export default defineComponent({
           console.error('Error fetching comics data:', error)
         })
     },
+    handleFavoriteClick(event, comic) {
+    event.stopPropagation();
+    this.addToFavorites(comic);
+  },
     addToFavorites(comic: any) {
       useCounterStore().addFavorite(comic)
     },
@@ -202,6 +206,13 @@ export default defineComponent({
     },
     setHovered(itemId: any) {
       this.hoveredItemId = itemId;
+    },
+    goToComicDetails(comic) {
+      const routeData = this.$router.resolve({
+        name: 'comicdetails',
+        query: { comicData: JSON.stringify(comic) },
+      });
+      window.open(routeData.href, '_blank');
     },
   },
 })
@@ -352,8 +363,6 @@ export default defineComponent({
 }
 
 
-
-
 .comic-title {
   font-size: 18px;
   margin-top: 10px;
@@ -392,6 +401,7 @@ export default defineComponent({
   border: none;
   background-color: transparent;
   cursor: pointer;
+  z-index: 11;
 }
 
 .favorite-button:hover {

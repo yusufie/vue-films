@@ -45,6 +45,11 @@ const router = createRouter({
       name: 'dvd',
       component: () => import('../views/DvdView.vue')
     },
+    {
+      path: '/comicdetails',
+      name: 'comicdetails',
+      component: () => import('../views/ComicDetailsView.vue')
+    },
   ]
 })
 
