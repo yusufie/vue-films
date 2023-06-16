@@ -185,7 +185,7 @@ export default defineComponent({
           console.error('Error fetching comics data:', error)
         })
     },
-    handleFavoriteClick(event, comic) {
+    handleFavoriteClick(event: any , comic: any) {
     event.stopPropagation();
     this.addToFavorites(comic);
   },
@@ -207,7 +207,7 @@ export default defineComponent({
     setHovered(itemId: any) {
       this.hoveredItemId = itemId;
     },
-    goToComicDetails(comic) {
+    goToComicDetails(comic: any) {
       const routeData = this.$router.resolve({
         name: 'comicdetails',
         query: { comicData: JSON.stringify(comic) },

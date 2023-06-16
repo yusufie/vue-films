@@ -2,7 +2,7 @@
   
   <div class="comic-details-page">
 
-    <div class="comic-details">
+    <div class="comic-details" v-if="comic">
       <h1>{{ comic.title }}</h1>
       <p>{{ comic.description }}</p>
       <p>Price: {{ comic.prices[0].price }}</p>
@@ -11,7 +11,7 @@
       <p>Creators: {{ getCreators(comic) }}</p>
     </div>
 
-    <div class="comic-thumbnail">
+    <div class="comic-thumbnail" v-if="comic">
       <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
     </div>
 
@@ -22,11 +22,21 @@
   
 <script lang="ts">
 
+interface Comic {
+  title: string;
+  description: string;
+  prices: { price: number }[];
+  series: { name: string };
+  characters: { items: { name: string }[] };
+  creators: { items: { name: string }[] };
+  thumbnail: { path: string; extension: string };
+}
+
 export default {
   name: 'ComicDetails',
   data() {
     return {
-      comic: null,
+      comic: null as Comic | null,
     };
   },
   created() {
@@ -35,18 +45,22 @@ export default {
   methods: {
     fetchComicData() {
       // Parse the comic data from the query parameter
-      const comicData = JSON.parse(this.$route.query.comicData);
-      this.comic = comicData;
+      const comicData = this.$route.query.comicData;
+      if (typeof comicData === 'string') {
+        this.comic = JSON.parse(comicData);
+      } else {
+        console.error('Invalid comic data:', comicData);
+      }
     },
-    getCreators(comic) {
+    getCreators(comic: Comic) {
       if (comic.creators && comic.creators.items.length > 0) {
-        return comic.creators.items.map(creator => creator.name).join(', ');
+        return comic.creators.items.map((creator: any) => creator.name).join(', ');
       }
       return 'N/A';
     },
-    getCharacters(comic) {
+    getCharacters(comic: Comic) {
       if (comic.characters && comic.characters.items.length > 0) {
-        return comic.characters.items.map((character) => character.name).join(', ');
+        return comic.characters.items.map((character: any) => character.name).join(', ');
       }
       return 'N/A';
     },
