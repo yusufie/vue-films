@@ -2,17 +2,21 @@
   
   <div class="comic-details-page">
 
-    <div class="comic-details" v-if="comic">
-      <h1>{{ comic.title }}</h1>
-      <p>{{ comic.description }}</p>
-      <p>Price: {{ comic.prices[0].price }}</p>
-      <p>Series: {{ comic.series.name }}</p>
-      <p>Characters: {{ getCharacters(comic) }}</p>
-      <p>Creators: {{ getCreators(comic) }}</p>
-    </div>
+    <div class="parent">
+      
+      <div class="comic-thumbnail" v-if="comic">
+        <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
+      </div>
 
-    <div class="comic-thumbnail" v-if="comic">
-      <img :src="comic.thumbnail.path + '/portrait_incredible.' + comic.thumbnail.extension" :alt="comic.title" />
+      <div class="comic-details" v-if="comic">
+        <h1>{{ comic.title }}</h1>
+        <p>{{ comic.description }}</p>
+        <p>Price: {{ comic.prices[0].price }}</p>
+        <p>Series: {{ comic.series.name }}</p>
+        <p>Characters: {{ getCharacters(comic) }}</p>
+        <p>Creators: {{ getCreators(comic) }}</p>
+      </div>
+      
     </div>
 
   </div>
@@ -92,45 +96,65 @@ export default {
 </script>
   
 <style scoped>
+
 .comic-details-page {
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  padding: 20px;
-  margin-top: 6rem;
+  height: 100vh;
+}
+
+.parent {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-template-rows: 1fr;
+grid-column-gap: 64px;
+grid-row-gap: 0px;
+/* background-color: black; */
 
   /* glassmorphism start */
-  background: rgba( 24, 24, 24, 0.4 );
+  background: rgb(0, 0, 39);
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 4px );
   -webkit-backdrop-filter: blur( 4px );
   border-radius: 10px;
   /* glassmorphism end */
-}
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
 
-img {
-  width: 100%;
-  max-width: 400px;
-  margin-right: 20px;
-}
-
-p {
-  font-size: 1.2rem;
+border-radius: 1rem;
+padding: 1rem;
 }
 
 .comic-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  margin-right: 2rem;
+  /* align-items: center; */
+  padding-right: 4rem;
+  
 }
+
+.comic-thumbnail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
+  height:100%;
+  border-radius: 1rem;
+
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
 
 </style>
   
