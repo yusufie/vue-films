@@ -1,6 +1,4 @@
-# vue-films
-
-# Live Demo
+# Vue-Films Live Demo
 https://vue-films.vercel.app/
 
 # Two Pages
