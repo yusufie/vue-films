@@ -253,17 +253,18 @@ export default defineComponent({
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  transform: scale(1.5);
     z-index: 10;
-    color: white;
+    color: #E50914;
   }
 
   .swiper-button-prev:hover {
-    scale: 1.2;
+    scale: 1.5;
     transition: all 0.5s ease-in-out;
   }
 
   .swiper-button-next:hover {
-    scale: 1.2;
+    scale: 1.5;
     transition: all 0.5s ease-in-out;
   }
   
