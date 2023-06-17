@@ -1,6 +1,9 @@
 # Vue-Films Live Demo
 https://vue-films.vercel.app/
 
+# API
+https://developer.marvel.com/
+
 # Two Pages
 
 1. Home Page
@@ -17,10 +20,6 @@ https://vue-films.vercel.app/
 - Use Vuex for state management.
 - Use SCSS for styling.
 - Don't use Bootstrap, Tailwind or any other CSS framework.
-
-
-# API
-https://developer.marvel.com/
 
 # Netflix Clone
 https://somanath-goudar.github.io/html-css-projects/netflix-clone/
