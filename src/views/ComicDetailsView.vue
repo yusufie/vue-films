@@ -22,6 +22,9 @@
   
 <script lang="ts">
 
+import axios from 'axios';
+import md5 from 'md5';
+
 interface Comic {
   title: string;
   description: string;
@@ -33,7 +36,7 @@ interface Comic {
 }
 
 export default {
-  name: 'ComicDetails',
+  name: 'ComicDetailsView',
   data() {
     return {
       comic: null as Comic | null,
@@ -44,14 +47,34 @@ export default {
   },
   methods: {
     fetchComicData() {
-      // Parse the comic data from the query parameter
-      const comicData = this.$route.query.comicData;
-      if (typeof comicData === 'string') {
-        this.comic = JSON.parse(comicData);
-      } else {
-        console.error('Invalid comic data:', comicData);
-      }
-    },
+    const comicId = this.$route.params.comicId;
+
+    if (!comicId) {
+      console.error('Invalid comic ID:', comicId);
+      return;
+    }
+
+    const publicKey = import.meta.env.VITE_APP_PUBLIC_KEY;
+    const privateKey = import.meta.env.VITE_APP_PRIVATE_KEY;
+    const ts = new Date().getTime().toString();
+    const hash = md5(ts + privateKey + publicKey);
+    const apiUrl = `https://gateway.marvel.com/v1/public/comics/${comicId}`;
+
+    axios
+      .get(apiUrl, {
+        params: {
+          ts: ts,
+          apikey: publicKey,
+          hash: hash,
+        },
+      })
+      .then((response) => {
+        this.comic = response.data.data.results[0];
+      })
+      .catch((error) => {
+        console.error('Error fetching comic data:', error);
+      });
+  },
     getCreators(comic: Comic) {
       if (comic.creators && comic.creators.items.length > 0) {
         return comic.creators.items.map((creator: any) => creator.name).join(', ');

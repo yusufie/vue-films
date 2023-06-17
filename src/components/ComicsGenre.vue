@@ -12,7 +12,7 @@
           :class="{ 'swiper-slide-active': isActive(comic.id), 'swiper-slide-hovered': isHovered(comic.id) }"
           @mouseenter="setHovered(comic.id)"
           @mouseleave="setHovered(null)"
-          @click="goToComicDetails(comic)"
+          @click="navigateToComicDetails(comic.id)"
           >
 
         <div class="comic-thumbnail">
@@ -207,13 +207,10 @@ export default defineComponent({
     setHovered(itemId: any) {
       this.hoveredItemId = itemId;
     },
-    goToComicDetails(comic: any) {
-      const routeData = this.$router.resolve({
-        name: 'comicdetails',
-        query: { comicData: JSON.stringify(comic) },
-      });
-      window.open(routeData.href, '_blank');
-    },
+    navigateToComicDetails(comicId: any) {
+  // Use the $router.push method to navigate to the comic details page
+  this.$router.push({ name: 'comic-details', params: { comicId } });
+  },
   },
 })
 </script>

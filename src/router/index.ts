@@ -46,10 +46,11 @@ const router = createRouter({
       component: () => import('../views/DvdView.vue')
     },
     {
-      path: '/comicdetails',
-      name: 'comicdetails',
+      path: '/comicdetails/:comicId',
+      name: 'comic-details',
       component: () => import('../views/ComicDetailsView.vue')
     },
+    
   ]
 })
 
